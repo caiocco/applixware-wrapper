@@ -123,7 +123,9 @@ Each item cost some debugging; they are documented in the scripts too.
 - **Classic window managers** cannot be used inside Xephyr (focus loop above).
   The default is Openbox with the bundled **EMWM-Motif** theme, which imitates
   EMWM/Motif decorations: menu button (click = window menu, double-click =
-  close), centred title, minimize and maximize buttons, EMWM default colours.
+  close), centred title, maximize button and EMWM default colours. Minimize
+  uses an OS/2-style *hide* glyph instead of the Motif one, since Openbox
+  does not iconify windows onto the root window.
 - **Printing:** print to a PostScript file and convert it (`ps2pdf`). There is
   no CUPS inside the container.
 - Do not run Applixware's own `install` again elsewhere: the key is bound to

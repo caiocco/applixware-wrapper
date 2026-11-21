@@ -5,6 +5,8 @@
 # Active:   base #7399ba  light #c0d1e0  shadow #3a4e5f
 # Inactive: base #8c8c8c  light #c8c8c8  shadow #464646
 # Button layout: D (Motif menu bar; rebound to the window menu in rc.xml) L I M
+# "I" uses an OS/2-style hide glyph (hollow 6x6) rather than Motif's minimize
+# dot: Openbox has no icons on the root window to minimize into.
 
 border.width: 1
 padding.width: 3
