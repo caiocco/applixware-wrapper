@@ -58,8 +58,10 @@ applixware --xephyr [...]      # same, inside a Xephyr window (see below)
 applixware --shell             # shell inside the container
 ```
 
-Running `applixware` again while it is open adds windows to the same session.
-Only one session can run at a time (the license is bound to the container).
+Running `applixware` again while it is open adds windows to the same session,
+as long as it is the same display (`--xephyr` reuses an open Xephyr session).
+Only one session can run at a time (the license is bound to the container);
+starting one on another display is refused.
 
 Settings go in the environment or in `~/.config/applixware-wrapper.conf`
 (a shell fragment):
@@ -70,7 +72,7 @@ Settings go in the environment or in `~/.config/applixware-wrapper.conf`
 | `AX_BASE` | `~/.local/opt/applixware-6` | where Applixware and the Openbox config live |
 | `AX_XEPHYR_SIZE` | `1920x900` | Xephyr screen size |
 | `AX_XEPHYR_DPI` | `96` | Xephyr DPI |
-| `AX_XEPHYR_WM` | Openbox + EMWM-Motif | window manager for `--xephyr` (see caveats) |
+| `AX_XEPHYR_WM` | Openbox + EMWM-Motif | window manager command for `--xephyr`, any program in `PATH` (classic WMs do not work, see caveats) |
 | `AX_LC_CTYPE` | `en_US` | any ISO-8859-1 locale in the image (`pt_BR`, `de_DE`, `fr_FR`, `es_ES`, `it_IT`) |
 | `AXLANG` | `1` | Applixware UI language: 1 English, 2 German, 3 French |
 
@@ -106,6 +108,9 @@ Each item cost some debugging; they are documented in the scripts too.
   FocusIn/FocusOut events until it exceeds `axMemoryLimit` ("High Memory Usage"
   popups, then exit). Modern window managers (xfwm4, Openbox, ...) are fine;
   bare X servers and classic ones (**mwm, EMWM, fvwm2, twm**) trigger it.
+  Applixware's own *Allow Window Manager to choose Focus* preference
+  (`axDisableFocusManage`, meant for click-to-type WMs) does not help: the
+  splash screen grabs the keyboard before it matters.
 
 ## Caveats
 

@@ -69,9 +69,15 @@ is_running() {
 # inside Xephyr/Xvfb they are clean.
 if [ "${1:-}" = --xephyr ]; then
     shift
-    # A session is already open in a Xephyr: just add windows to it.
+    # A session is already open in a Xephyr: just add windows to it. A session
+    # on any other display is left alone.
     if is_running; then
-        DISPLAY=$(running_display) exec "$0" "$@"
+        cur=$(running_display)
+        if pgrep -x -f "Xephyr ${cur}( .*)?" >/dev/null; then
+            DISPLAY=$cur exec "$0" "$@"
+        fi
+        echo "Applixware is already running on display $cur (not a Xephyr); close it first." >&2
+        exit 1
     fi
     n=10
     while [ -e /tmp/.X11-unix/X$n ] || [ -e /tmp/.X$n-lock ]; do n=$((n + 1)); done
