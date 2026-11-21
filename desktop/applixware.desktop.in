@@ -1,0 +1,24 @@
+[Desktop Entry]
+Type=Application
+Name=Applixware
+GenericName=Office Suite
+GenericName[pt_BR]=Pacote de escritório
+Comment=Applixware 6.0 Home User Edition (Words, Spreadsheets, Graphics, Presents)
+Comment[pt_BR]=Applixware 6.0 Home User Edition (Words, Spreadsheets, Graphics, Presents)
+Exec=@BINDIR@/applixware %F
+Icon=applixware
+Terminal=false
+Categories=Office;WordProcessor;Spreadsheet;
+StartupNotify=false
+StartupWMClass=applix
+Actions=xephyr;graphics;
+
+[Desktop Action xephyr]
+Name=Applixware (Xephyr)
+Name[pt_BR]=Applixware no Xephyr
+Exec=@BINDIR@/applixware --xephyr %F
+
+[Desktop Action graphics]
+Name=Applix Graphics (Xephyr)
+Name[pt_BR]=Applix Graphics no Xephyr
+Exec=@BINDIR@/applixware --xephyr -gr

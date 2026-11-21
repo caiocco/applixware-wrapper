@@ -1,0 +1,33 @@
+# applixware-wrapper - runtime for Applixware 6.0 Home User Edition (i386, 2006)
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Debian etch i386 still ships libstdc++-libc6.2-2.so.3 (GCC 2.95 ABI),
+# which the 2006 binaries need.
+FROM docker.io/debian/eol:etch
+
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes \
+      libstdc++2.10-glibc2.2 libx11-6 libxext6 libxt6 libxmu6 \
+      gs-gpl procps net-tools file strace less locales && apt-get clean
+
+# FLEXlm (lmgrd) needs /usr/tmp for its lock file.
+RUN mkdir -p /usr/tmp && chmod 1777 /usr/tmp
+
+# Stable gethostid(); the FLEXlm hostid itself is the eth0 MAC, pinned by the launcher.
+RUN printf '\x0a\x0b\x0c\x0d' > /etc/hostid
+
+# LD_PRELOAD shim: 32-bit stat()/readdir() fail with EOVERFLOW on filesystems
+# with 64-bit inode numbers (XFS, large ext4...). See ino32shim.c.
+COPY ino32shim.c /usr/local/src/
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes gcc libc6-dev \
+ && gcc -O2 -Wall -shared -fPIC -o /usr/local/lib/libino32shim.so /usr/local/src/ino32shim.c \
+ && apt-get remove --purge -y gcc gcc-4.1 cpp cpp-4.1 binutils libc6-dev linux-kernel-headers \
+ && apt-get clean
+ENV LD_PRELOAD=/usr/local/lib/libino32shim.so
+
+# With LC_CTYPE=C Applixware strips the 8th bit of typed text (é -> i, ç -> g).
+# Any ISO-8859-1 locale works; only LC_CTYPE is set, so number/date formats
+# stay untouched.
+RUN printf '%s\n' 'en_US ISO-8859-1' 'pt_BR ISO-8859-1' 'de_DE ISO-8859-1' \
+      'fr_FR ISO-8859-1' 'es_ES ISO-8859-1' 'it_IT ISO-8859-1' > /etc/locale.gen \
+ && locale-gen
+ENV LC_CTYPE=en_US

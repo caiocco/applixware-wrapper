@@ -1,0 +1,4 @@
+#define shade_toggled_width 5
+#define shade_toggled_height 3
+static unsigned char shade_toggled_bits[] = {
+   0x1f, 0x1f, 0x00 };
