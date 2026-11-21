@@ -15,14 +15,16 @@ RUN mkdir -p /usr/tmp && chmod 1777 /usr/tmp
 # Stable gethostid(); the FLEXlm hostid itself is the eth0 MAC, pinned by the launcher.
 RUN printf '\x0a\x0b\x0c\x0d' > /etc/hostid
 
-# LD_PRELOAD shim: 32-bit stat()/readdir() fail with EOVERFLOW on filesystems
-# with 64-bit inode numbers (XFS, large ext4...). See ino32shim.c.
-COPY ino32shim.c /usr/local/src/
+# LD_PRELOAD shim (see axshim.c): 32-bit stat()/readdir() fail with EOVERFLOW
+# on filesystems with 64-bit inode numbers (XFS, large ext4...); and, when
+# AX_FNCONV is set (the launcher does it for Applixware only), UTF-8 host file
+# names are translated to/from ISO-8859-1.
+COPY axshim.c /usr/local/src/
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes gcc libc6-dev \
- && gcc -O2 -Wall -shared -fPIC -o /usr/local/lib/libino32shim.so /usr/local/src/ino32shim.c \
+ && gcc -O2 -Wall -shared -fPIC -o /usr/local/lib/libaxshim.so /usr/local/src/axshim.c -ldl \
  && apt-get remove --purge -y gcc gcc-4.1 cpp cpp-4.1 binutils libc6-dev linux-kernel-headers \
  && apt-get clean
-ENV LD_PRELOAD=/usr/local/lib/libino32shim.so
+ENV LD_PRELOAD=/usr/local/lib/libaxshim.so
 
 # With LC_CTYPE=C Applixware strips the 8th bit of typed text (é -> i, ç -> g).
 # Any ISO-8859-1 locale works; only LC_CTYPE is set, so number/date formats

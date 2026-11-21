@@ -90,9 +90,16 @@ Each item cost some debugging; they are documented in the scripts too.
   network with a fixed MAC and hostname (`AX_MAC`, `AX_HOST`).
 - **64-bit inode numbers.** The 2006 binaries use 32-bit `stat()`/`readdir()`,
   which fail with `EOVERFLOW` on XFS/ext4 with large inode numbers: the font
-  path "breaks", `axmain` dies, files cannot be opened. `container/ino32shim.c`
+  path "breaks", `axmain` dies, files cannot be opened. `container/axshim.c`
   is an `LD_PRELOAD` shim that calls the 64-bit variants and folds the inode.
   (On tmpfs everything works, which hides the bug.)
+- **UTF-8 file names.** Applixware lives in ISO-8859-1, so "Relatório.aw"
+  would show up as "RelatÃ³rio.aw". The same shim translates file names at the
+  libc boundary for Applixware's processes only, one path component at a
+  time: names that fit in Latin-1 are shown and typed correctly (and created
+  as UTF-8 on disk); names with characters outside Latin-1 (€, CJK...) are
+  passed through raw, so they look odd but still open. Command lines handed
+  to other programs (`system`, `popen`, `exec`) are converted back to UTF-8.
 - **8-bit text.** Without an ISO-8859-1 `LC_CTYPE` Applixware strips the 8th
   bit of what you type (é→i, ç→g, ©→`)`).
 - **Dead keys.** Applixware composes dead keys itself from
@@ -139,7 +146,7 @@ Each item cost some debugging; they are documented in the scripts too.
 ```
 bin/applixware                 launcher
 container/Containerfile        i386 Debian etch image
-container/ino32shim.c          LD_PRELOAD shim for 64-bit inodes
+container/axshim.c             LD_PRELOAD shim: 64-bit inodes, UTF-8 file names
 openbox/rc.xml                 Openbox config for --xephyr
 themes/EMWM-Motif/openbox-3/   Openbox theme imitating EMWM
 desktop/applixware.desktop.in  menu entry template
@@ -163,8 +170,8 @@ applixware               # ou pelo menu
 ```
 
 Contornos incluídos: biblioteca C++ do GCC 2.95, hostid do FLEXlm (MAC fixo no
-contêiner), shim para inodes de 64 bits (XFS/ext4), locale Latin-1 para os
-acentos, cedilha com `'`+`c` no teclado US-Internacional, fontes no servidor X
+contêiner), shim para inodes de 64 bits (XFS/ext4) e para nomes de arquivo
+UTF-8 (acentos nos nomes aparecem certos), locale Latin-1 para os acentos, cedilha com `'`+`c` no teclado US-Internacional, fontes no servidor X
 do host. No Xorg com aceleração glamor, o Graphics deixa rastros ao mover
 formas; use `applixware --xephyr` (ou a ação "Applix Graphics no Xephyr" do
 menu), que roda dentro de um Xephyr com Openbox e um tema imitando o EMWM.
