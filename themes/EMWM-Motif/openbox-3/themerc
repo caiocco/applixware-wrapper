@@ -1,9 +1,13 @@
-# EMWM-Motif - Openbox theme imitating EMWM/Motif with its default colours
+# EMWM-Motif - Openbox theme imitating EMWM/Motif decorations
 # Used by "applixware --xephyr" (own rc.xml in $AX_BASE/openbox/rc.xml).
 # Part of applixware-wrapper. SPDX-License-Identifier: GPL-3.0-or-later
 #
-# Active:   base #7399ba  light #c0d1e0  shadow #3a4e5f
-# Inactive: base #8c8c8c  light #c8c8c8  shadow #464646
+# Active colours derive from X11 "cyan4" (#008b8b) by Motif's own rule
+# (XmCalculateColorsRGB): top shadow #89c9c9, bottom shadow #004242, white text.
+# Openbox bevels multiply the base colour instead of blending towards white,
+# so the light edge can only get Motif's green/blue (#00c9c9; red stays 0).
+# Active:   base #008b8b  light #89c9c9  shadow #004242
+# Inactive: base #8c8c8c  light #cccccc  shadow #474747
 # Button layout: D (Motif menu bar; rebound to the window menu in rc.xml) L I M
 # "I" uses an OS/2 Warp 3 style hide glyph (corners of an 8x8 square) rather
 # than Motif's minimize dot: Openbox has no root-window icons to minimize into.
@@ -17,46 +21,66 @@ window.client.padding.width: 4
 window.client.padding.height: 4
 
 # ---- active window ----------------------------------------------------
-window.active.border.color: #3a4e5f
-window.active.title.separator.color: #3a4e5f
-window.active.client.color: #7399ba
+window.active.border.color: #004242
+window.active.title.separator.color: #004242
+window.active.client.color: #008b8b
 
 window.active.title.bg: flat solid
-window.active.title.bg.color: #7399ba
-window.active.title.bg.highlight: 140
-window.active.title.bg.shadow: 50
+window.active.title.bg.color: #008b8b
 
 window.active.label.bg: raised solid bevel1
-window.active.label.bg.color: #7399ba
+window.active.label.bg.color: #008b8b
 window.active.label.text.color: #ffffff
 window.active.label.text.font: shadow=n
 
 window.active.handle.bg: raised solid bevel1
-window.active.handle.bg.color: #7399ba
+window.active.handle.bg.color: #008b8b
 window.active.grip.bg: raised solid bevel1
-window.active.grip.bg.color: #7399ba
+window.active.grip.bg.color: #008b8b
 
 window.active.button.unpressed.bg: raised solid bevel1
-window.active.button.unpressed.bg.color: #7399ba
-window.active.button.unpressed.image.color: #3a4e5f
+window.active.button.unpressed.bg.color: #008b8b
+window.active.button.unpressed.image.color: #004242
 window.active.button.hover.bg: raised solid bevel1
-window.active.button.hover.bg.color: #7399ba
-window.active.button.hover.image.color: #3a4e5f
+window.active.button.hover.bg.color: #008b8b
+window.active.button.hover.image.color: #004242
 window.active.button.pressed.bg: sunken solid bevel1
-window.active.button.pressed.bg.color: #7399ba
-window.active.button.pressed.image.color: #c0d1e0
+window.active.button.pressed.bg.color: #008b8b
+window.active.button.pressed.image.color: #89c9c9
 window.active.button.toggled.unpressed.bg: raised solid bevel1
-window.active.button.toggled.unpressed.bg.color: #7399ba
-window.active.button.toggled.unpressed.image.color: #3a4e5f
+window.active.button.toggled.unpressed.bg.color: #008b8b
+window.active.button.toggled.unpressed.image.color: #004242
 window.active.button.toggled.pressed.bg: sunken solid bevel1
-window.active.button.toggled.pressed.bg.color: #7399ba
-window.active.button.toggled.pressed.image.color: #c0d1e0
+window.active.button.toggled.pressed.bg.color: #008b8b
+window.active.button.toggled.pressed.image.color: #89c9c9
 window.active.button.toggled.hover.bg: raised solid bevel1
-window.active.button.toggled.hover.bg.color: #7399ba
-window.active.button.toggled.hover.image.color: #3a4e5f
+window.active.button.toggled.hover.bg.color: #008b8b
+window.active.button.toggled.hover.image.color: #004242
 window.active.button.disabled.bg: raised solid bevel1
-window.active.button.disabled.bg.color: #7399ba
-window.active.button.disabled.image.color: #9fb6cc
+window.active.button.disabled.bg.color: #008b8b
+window.active.button.disabled.image.color: #45aaaa
+
+# bevel edges calibrated to the Motif colours above
+window.active.label.bg.highlight: 115
+window.active.label.bg.shadow: 134
+window.active.handle.bg.highlight: 115
+window.active.handle.bg.shadow: 134
+window.active.grip.bg.highlight: 115
+window.active.grip.bg.shadow: 134
+window.active.button.unpressed.bg.highlight: 115
+window.active.button.unpressed.bg.shadow: 134
+window.active.button.hover.bg.highlight: 115
+window.active.button.hover.bg.shadow: 134
+window.active.button.pressed.bg.highlight: 115
+window.active.button.pressed.bg.shadow: 134
+window.active.button.toggled.unpressed.bg.highlight: 115
+window.active.button.toggled.unpressed.bg.shadow: 134
+window.active.button.toggled.pressed.bg.highlight: 115
+window.active.button.toggled.pressed.bg.shadow: 134
+window.active.button.toggled.hover.bg.highlight: 115
+window.active.button.toggled.hover.bg.shadow: 134
+window.active.button.disabled.bg.highlight: 115
+window.active.button.disabled.bg.shadow: 134
 
 # ---- inactive window --------------------------------------------------
 window.inactive.border.color: #464646
@@ -65,8 +89,6 @@ window.inactive.client.color: #8c8c8c
 
 window.inactive.title.bg: flat solid
 window.inactive.title.bg.color: #8c8c8c
-window.inactive.title.bg.highlight: 140
-window.inactive.title.bg.shadow: 50
 
 window.inactive.label.bg: raised solid bevel1
 window.inactive.label.bg.color: #8c8c8c
@@ -100,6 +122,28 @@ window.inactive.button.disabled.bg: raised solid bevel1
 window.inactive.button.disabled.bg.color: #8c8c8c
 window.inactive.button.disabled.image.color: #a8a8a8
 
+# bevel edges calibrated to the Motif colours above
+window.inactive.label.bg.highlight: 117
+window.inactive.label.bg.shadow: 126
+window.inactive.handle.bg.highlight: 117
+window.inactive.handle.bg.shadow: 126
+window.inactive.grip.bg.highlight: 117
+window.inactive.grip.bg.shadow: 126
+window.inactive.button.unpressed.bg.highlight: 117
+window.inactive.button.unpressed.bg.shadow: 126
+window.inactive.button.hover.bg.highlight: 117
+window.inactive.button.hover.bg.shadow: 126
+window.inactive.button.pressed.bg.highlight: 117
+window.inactive.button.pressed.bg.shadow: 126
+window.inactive.button.toggled.unpressed.bg.highlight: 117
+window.inactive.button.toggled.unpressed.bg.shadow: 126
+window.inactive.button.toggled.pressed.bg.highlight: 117
+window.inactive.button.toggled.pressed.bg.shadow: 126
+window.inactive.button.toggled.hover.bg.highlight: 117
+window.inactive.button.toggled.hover.bg.shadow: 126
+window.inactive.button.disabled.bg.highlight: 117
+window.inactive.button.disabled.bg.shadow: 126
+
 # ---- menus (grey Motif-style menus) -----------------------------------
 menu.border.width: 1
 menu.border.color: #464646
@@ -110,7 +154,7 @@ menu.separator.padding.height: 3
 menu.overlap.x: 0
 menu.overlap.y: 0
 menu.title.bg: raised solid bevel1
-menu.title.bg.color: #7399ba
+menu.title.bg.color: #008b8b
 menu.title.text.color: #ffffff
 menu.title.text.justify: center
 menu.items.bg: raised solid bevel1
@@ -118,19 +162,19 @@ menu.items.bg.color: #d7d7d7
 menu.items.text.color: #000000
 menu.items.disabled.text.color: #8c8c8c
 menu.items.active.bg: raised solid bevel1
-menu.items.active.bg.color: #c0d1e0
+menu.items.active.bg.color: #89c9c9
 menu.items.active.text.color: #000000
 menu.items.active.disabled.text.color: #8c8c8c
 
 # ---- OSD ---------------------------------------------------------------
 osd.border.width: 1
-osd.border.color: #3a4e5f
+osd.border.color: #004242
 osd.bg: raised solid bevel1
 osd.bg.color: #d7d7d7
 osd.label.bg: flat solid
 osd.label.bg.color: #d7d7d7
 osd.label.text.color: #000000
 osd.hilight.bg: flat solid
-osd.hilight.bg.color: #7399ba
+osd.hilight.bg.color: #008b8b
 osd.unhilight.bg: flat solid
 osd.unhilight.bg.color: #8c8c8c

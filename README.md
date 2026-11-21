@@ -123,7 +123,9 @@ Each item cost some debugging; they are documented in the scripts too.
 - **Classic window managers** cannot be used inside Xephyr (focus loop above).
   The default is Openbox with the bundled **EMWM-Motif** theme, which imitates
   EMWM/Motif decorations: menu button (click = window menu, double-click =
-  close), centred title, maximize button and EMWM default colours. Minimize
+  close), centred title, maximize button, EMWM's blue root window and
+  inactive grey, with the active window in X11 *cyan4* and its Motif-derived
+  shades (light/shadow computed by Motif's own colour rule). Minimize
   uses an OS/2 Warp-style *hide* glyph (only the corners of a square)
   instead of the Motif one, since Openbox
   does not iconify windows onto the root window.
