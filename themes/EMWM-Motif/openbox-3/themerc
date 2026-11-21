@@ -8,6 +8,8 @@
 # so the light edge can only get Motif's green/blue (#00c9c9; red stays 0).
 # Active:   base #008b8b  light #89c9c9  shadow #004242
 # Inactive: base #8c8c8c  light #cccccc  shadow #474747
+# Text and button glyphs follow Motif's foreground rule: white on both
+# (black only above 70% background brightness; #8c8c8c is 55%).
 # Button layout: D (Motif menu bar; rebound to the window menu in rc.xml) L I M
 # "I" uses an OS/2 Warp 3 style hide glyph (corners of an 8x8 square) rather
 # than Motif's minimize dot: Openbox has no root-window icons to minimize into.
@@ -102,22 +104,22 @@ window.inactive.grip.bg.color: #8c8c8c
 
 window.inactive.button.unpressed.bg: raised solid bevel1
 window.inactive.button.unpressed.bg.color: #8c8c8c
-window.inactive.button.unpressed.image.color: #464646
+window.inactive.button.unpressed.image.color: #ffffff
 window.inactive.button.hover.bg: raised solid bevel1
 window.inactive.button.hover.bg.color: #8c8c8c
-window.inactive.button.hover.image.color: #464646
+window.inactive.button.hover.image.color: #ffffff
 window.inactive.button.pressed.bg: sunken solid bevel1
 window.inactive.button.pressed.bg.color: #8c8c8c
-window.inactive.button.pressed.image.color: #c8c8c8
+window.inactive.button.pressed.image.color: #ffffff
 window.inactive.button.toggled.unpressed.bg: raised solid bevel1
 window.inactive.button.toggled.unpressed.bg.color: #8c8c8c
-window.inactive.button.toggled.unpressed.image.color: #464646
+window.inactive.button.toggled.unpressed.image.color: #ffffff
 window.inactive.button.toggled.pressed.bg: sunken solid bevel1
 window.inactive.button.toggled.pressed.bg.color: #8c8c8c
-window.inactive.button.toggled.pressed.image.color: #c8c8c8
+window.inactive.button.toggled.pressed.image.color: #ffffff
 window.inactive.button.toggled.hover.bg: raised solid bevel1
 window.inactive.button.toggled.hover.bg.color: #8c8c8c
-window.inactive.button.toggled.hover.image.color: #464646
+window.inactive.button.toggled.hover.image.color: #ffffff
 window.inactive.button.disabled.bg: raised solid bevel1
 window.inactive.button.disabled.bg.color: #8c8c8c
 window.inactive.button.disabled.image.color: #a8a8a8
