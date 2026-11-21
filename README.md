@@ -124,7 +124,8 @@ Each item cost some debugging; they are documented in the scripts too.
   The default is Openbox with the bundled **EMWM-Motif** theme, which imitates
   EMWM/Motif decorations: menu button (click = window menu, double-click =
   close), centred title, maximize button and EMWM default colours. Minimize
-  uses an OS/2-style *hide* glyph instead of the Motif one, since Openbox
+  uses an OS/2 Warp-style *hide* glyph (only the corners of a square)
+  instead of the Motif one, since Openbox
   does not iconify windows onto the root window.
 - **Printing:** print to a PostScript file and convert it (`ps2pdf`). There is
   no CUPS inside the container.
