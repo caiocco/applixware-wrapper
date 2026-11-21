@@ -31,10 +31,11 @@
 # - The installation is mounted at the same absolute path in the container, so
 #   the font path Applixware adds to the X server (<inst>/axfonts/all_pcf)
 #   also exists on the host.
-# - Without a window manager (bare Xvfb), and with classic WMs (mwm, emwm,
-#   fvwm2, twm), axmain falls into a FocusIn/FocusOut + XGrabKeyboard loop at
-#   startup and dies with "exceeded axMemoryLimit" ("High Memory Usage"
-#   popups). Modern WMs (xfwm4, Openbox, ...) focus the new window and work.
+# - Without a window manager (bare Xvfb), and with mwm, emwm or twm, axmain
+#   falls into a FocusIn/FocusOut + XGrabKeyboard loop at startup and dies
+#   with "exceeded axMemoryLimit" ("High Memory Usage" popups). xfwm4 and
+#   Openbox work. fvwm2 works only without GrabFocus (Style * GrabFocusOff;
+#   ClickToFocus turns GrabFocus on); see "Focus loop" in README.
 #
 # Part of applixware-wrapper. SPDX-License-Identifier: GPL-3.0-or-later
 

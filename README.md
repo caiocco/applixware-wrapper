@@ -81,7 +81,7 @@ Settings go in the environment or in `~/.config/applixware-wrapper.conf`
 | `AX_BASE` | `~/.local/opt/applixware-6` | where Applixware and the Openbox config live |
 | `AX_XEPHYR_SIZE` | `1920x900` | Xephyr screen size |
 | `AX_XEPHYR_DPI` | `96` | Xephyr DPI |
-| `AX_XEPHYR_WM` | Openbox + EMWM-Motif | window manager command for `--xephyr`, any program in `PATH` (classic WMs do not work, see caveats) |
+| `AX_XEPHYR_WM` | Openbox + EMWM-Motif | window manager command for `--xephyr`, any program in `PATH` (mwm, EMWM, twm do not work; fvwm2 needs `GrabFocusOff`; see caveats) |
 | `AX_LC_CTYPE` | `en_US` | any ISO-8859-1 locale in the image (`pt_BR`, `de_DE`, `fr_FR`, `es_ES`, `it_IT`) |
 | `AXLANG` | `1` | Applixware UI language: 1 English, 2 German, 3 French |
 
@@ -119,14 +119,26 @@ Each item cost some debugging; they are documented in the scripts too.
   container. Its bundled font server (gfs) would listen inside the container;
   instead the launcher adds the TrueType directory to the host X server with
   `xset +fp`, and passes `-fp` so the UI fonts are found.
-- **Focus loop.** At startup, if the new main window does not get the input
-  focus while the splash screen holds a keyboard grab, `axmain` loops on
-  FocusIn/FocusOut events until it exceeds `axMemoryLimit` ("High Memory Usage"
-  popups, then exit). Modern window managers (xfwm4, Openbox, ...) are fine;
-  bare X servers and classic ones (**mwm, EMWM, fvwm2, twm**) trigger it.
-  Applixware's own *Allow Window Manager to choose Focus* preference
-  (`axDisableFocusManage`, meant for click-to-type WMs) does not help: the
-  splash screen grabs the keyboard before it matters.
+- **Focus loop.** At startup, while the splash screen holds a keyboard grab,
+  some focus handling makes `axmain` loop on FocusIn/FocusOut events until it
+  exceeds `axMemoryLimit` ("High Memory Usage" popups, then exit, about 10 s
+  after start). Whether it happens depends on how the window manager focuses
+  the new main window, not on the focus policy as such. xfwm4 and Openbox
+  are fine. Bare X servers, mwm, EMWM and twm trigger it. With fvwm2 (2.7,
+  tested in Xephyr) it comes down to one style:
+
+  | fvwm2 style | Result |
+  |---|---|
+  | `Style * ClickToFocus` (implies `GrabFocus`) | loops |
+  | `Style * SloppyFocus, GrabFocus` | loops |
+  | `Style * ClickToFocus, GrabFocusOff` | works |
+  | `SloppyFocus` / `MouseFocus` (`GrabFocusOff` by default) | works |
+
+  So in fvwm `Style * GrabFocusOff` (or just for Applixware's windows) avoids
+  it, even with click-to-focus; the main window then has to be clicked once
+  to get the focus. Applixware's own *Allow Window Manager to choose Focus*
+  preference (`axDisableFocusManage`, meant for click-to-type WMs) does not
+  help: the splash screen grabs the keyboard before it matters.
 
 ## Caveats
 
@@ -136,9 +148,9 @@ Each item cost some debugging; they are documented in the scripts too.
   inside Xephyr (software rendering), where they are clean. The menu entry has
   "Applixware (Xephyr)" and "Applix Graphics (Xephyr)" actions for that.
   Xephyr has its own clipboard, not shared with the desktop.
-- **Classic window managers** cannot be used inside Xephyr (focus loop above).
-  The default is Openbox with the bundled **EMWM-Motif** theme, which imitates
-  EMWM/Motif decorations: menu button (click = window menu, double-click =
+- **Classic window managers** (mwm, EMWM, twm) cannot be used inside Xephyr
+  (focus loop above); fvwm2 can, with `GrabFocusOff`. The default is Openbox
+  with the bundled **EMWM-Motif** theme, which imitates EMWM/Motif decorations: menu button (click = window menu, double-click =
   close), centred title, maximize button, EMWM's blue root window and
   inactive grey, with the active window in X11 *cyan4* and its Motif-derived
   shades (light/shadow computed by Motif's own colour rule). Minimize
@@ -184,8 +196,9 @@ UTF-8 (acentos nos nomes aparecem certos), locale Latin-1 para os acentos, cedil
 do host. No Xorg com aceleração glamor, o Graphics deixa rastros ao mover
 formas; use `applixware --xephyr` (ou a ação "Applix Graphics no Xephyr" do
 menu), que roda dentro de um Xephyr com Openbox e um tema imitando o EMWM.
-WMs clássicos (mwm, EMWM, fvwm2, twm) disparam um laço de foco na abertura e
-não servem dentro do Xephyr.
+WMs clássicos (mwm, EMWM, twm) disparam um laço de foco na abertura e não
+servem dentro do Xephyr. O fvwm2 serve, desde que não dê o foco às janelas
+novas (`Style * GrabFocusOff`; o `ClickToFocus` liga o `GrabFocus`).
 
 ## License
 
