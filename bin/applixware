@@ -81,6 +81,10 @@ if [ "${1:-}" = --xephyr ]; then
         echo "Applixware is already running on display $cur (not a Xephyr); close it first." >&2
         exit 1
     fi
+    # The nested WM must not join the host's session manager (XSMP): Openbox's
+    # Exit action ("Log Out" in its menu) asks a connected session manager to
+    # log out, which would end the whole desktop session on the host display.
+    unset SESSION_MANAGER
     n=10
     while [ -e /tmp/.X11-unix/X$n ] || [ -e /tmp/.X$n-lock ]; do n=$((n + 1)); done
     Xephyr :$n -ac -nolisten tcp -resizeable -title "Applixware" -dpi "${AX_XEPHYR_DPI:-96}" \
