@@ -18,6 +18,15 @@ to PostScript included.
 
 Tested on openSUSE Leap 16.0 (x86_64, Xorg, podman 5) with Xfce/xfwm4.
 
+<p align="center">
+  <img src="docs/nested_applixware.png" width="960"
+       alt="Applixware 6.0 running inside Xephyr with Openbox and the EMWM-Motif theme">
+  <br>
+  <em>Applixware 6.0 in a Xephyr window (<code>applixware --xephyr</code>), Openbox with
+  the EMWM-Motif theme: the main launcher, Words, Spreadsheets, Graphics and
+  Builder, with the version dialog open.</em>
+</p>
+
 ## Requirements
 
 - `podman` (rootless is fine), able to run `--arch 386` images
